@@ -1,7 +1,8 @@
 <?xml version="1.0" ?>
 <CustomReport title="Höhenlage Check" menupath="Plausibilitäts- und Fehlerprüfung" 
 description="Prüft Einträge zu Höhenlagen auf korrektes Format. Die eingegeben Daten dürfen nur Zahlen [0-9], Bindestrich [-] und Freizeichen [ ] enthalten, Nachkommazahlen sind nicht zugelassen. Erstellt eine Tabelle mit Projektname, Aufnahme-Schlüssel (Sample Key) und dem fehlerhaften Eintrag. 
-v01 vom 28.12.2020">
+v01   vom 28.12.2020
+v01.1 vom 28.12.2020 Ergänzung der Bezüge Max, Min, Mittel">
 
 <SQL>
 <Where keytype="Default">
@@ -15,7 +16,7 @@ v01 vom 28.12.2020">
   INNER JOIN survey_event se on se.survey_Key = sv.Survey_key
   INNER JOIN SAMPLE s on s.survey_event_key = se.survey_event_key
   INNER JOIN SAMPLE_DATA sd on sd.SAMPLE_KEY = s.SAMPLE_KEY
-  WHERE MEASUREMENT_QUALIFIER_KEY = 'NBNSYS0000000003' 
+  WHERE MEASUREMENT_QUALIFIER_KEY IN ('NBNSYS0000000003','BFNSYS0000000007','BFNSYS0000000008','BFNSYS0000000073') 
     AND MEASUREMENT_UNIT_KEY = 'NBNSYS0000000006'
     AND PATINDEX('%[^0-9- ]%',data) > 0
 </Where>
