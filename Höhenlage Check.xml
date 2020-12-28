@@ -1,0 +1,30 @@
+<?xml version="1.0" ?>
+<CustomReport title="Höhenlage Check" menupath="Plausibilitäts- und Fehlerprüfung" 
+description="Prüft Einträge zu Höhenlagen auf korrektes Format. Die eingegeben Daten dürfen nur Zahlen [0-9], Bindestrich [-] und Freizeichen [ ] enthalten, Nachkommazahlen sind nicht zugelassen. Erstellt eine Tabelle mit Projektname, Aufnahme-Schlüssel (Sample Key) und dem fehlerhaften Eintrag. 
+v01 vom 28.12.2020">
+
+<SQL>
+<Where keytype="Default">
+  SELECT
+  s.SAMPLE_KEY as sample_key
+  , sv.ITEM_NAME as Projekt
+  , sd.DATA
+  , sd.ACCURACY
+  FROM
+  SURVEY sv
+  INNER JOIN survey_event se on se.survey_Key = sv.Survey_key
+  INNER JOIN SAMPLE s on s.survey_event_key = se.survey_event_key
+  INNER JOIN SAMPLE_DATA sd on sd.SAMPLE_KEY = s.SAMPLE_KEY
+  WHERE MEASUREMENT_QUALIFIER_KEY = 'NBNSYS0000000003' 
+    AND MEASUREMENT_UNIT_KEY = 'NBNSYS0000000006'
+    AND PATINDEX('%[^0-9- ]%',data) > 0
+</Where>
+</SQL>
+
+<Columns>
+<Column name="sample_key" caption="Aufnahme-Schlüssel" tablename="sample" width="150" keycolumn="sample_key" position="1"/>
+<Column name="Projekt" caption="Projekt" width="150" position="2" />
+<Column name="Data" caption="Höhenlage Eintrag" width="80" position="3" />
+<Column name="Accuracy" caption="Detailschärfe" width="100" position="4" />
+</Columns>
+</CustomReport>
